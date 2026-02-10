@@ -2,7 +2,7 @@ name: ClawCloud 自动登录保活
 
 on:
   schedule:
-    - cron: '0 1 */5 * *'  # UTC 1:00，每5天运行
+    - cron: '0 1 */4 * *'  # UTC 1:00，每5天运行
   workflow_dispatch:
 
 jobs:
@@ -43,4 +43,10 @@ jobs:
           git commit --allow-empty -m "Chore: Keep-alive [skip ci]"
           git push || echo "No changes to push"
 
-
+      - name: Delete workflow runs
+        uses: yxdz2020/delete-workflow-runs@v20260116
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 10
